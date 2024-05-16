@@ -13,6 +13,9 @@
 .PARAMETER Output
     The output MSI package file. (required)
 
+.PARAMETER Version
+    The output MSI package file. (required)
+
 .PARAMETER TemplateFile
     The template file used by WiX as source file. Will use the default one if not provided. (optional)
 
@@ -24,6 +27,7 @@
 param (
     [Parameter(Mandatory)][string]$Config,
     [Parameter(Mandatory)][string]$Output,
+    [Parameter(Mandatory)][string]$Version,
     [string]$TemplateFile = "$PSScriptRoot\template.wxs",
     [string]$WorkingDir = $( Join-Path $env:TEMP "~wixc" )
 )
@@ -52,7 +56,8 @@ $ConfigYaml = (Get-Content $Config -Encoding UTF8 | ConvertFrom-Yaml)
 
 $VarsList = @{ }
 $VarsList.Add("ProductName", $ConfigYaml.Product.Name)
-$VarsList.Add("ProductVersion", $ConfigYaml.Product.Version)
+# $VarsList.Add("ProductVersion", $ConfigYaml.Product.Version)
+$VarsList.Add("ProductVersion", $Version)
 $VarsList.Add("UpgradeCode", $ConfigYaml.UpgradeCode)
 $VarsList.Add("Manufacturer", $ConfigYaml.Manufacturer)
 $VarsList.Add("MainExecutable", $ConfigYaml.Files.MainExecutable)
